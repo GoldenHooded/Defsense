@@ -20,6 +20,8 @@ public class CameraDrag : MonoBehaviour
     {
         structures = FindObjectsOfType<Structure>();
         dragControl = FindObjectOfType<DragControl>();
+
+        doDrag = true;
     }
     
     public static void CheckStructures()
@@ -31,22 +33,28 @@ public class CameraDrag : MonoBehaviour
 
     void Update()
     {
+        if (!dragControl.doDrag)
+        {
+            doDrag = false;
+        }
+        else
+        {
+            doDrag = true;
+        }
+
         for (int i = 0; i < structures.Length; i++)
         {
             if (!structures[i].doDrag)
             {
                 doDrag = false; break;
             }
-            else
+            else if (doDrag)
             {
                 doDrag = true;
             }
         }
 
-        if (!dragControl.CanDrag())
-        {
-            doDrag = false;
-        }
+        
 
         if (doDrag)
         {
@@ -84,7 +92,7 @@ public class CameraDrag : MonoBehaviour
                 float difference = currentMagnitude - prevMagnitude;
 
                 Zoom(difference * 0.01f);
-            } 
+            }
         }
     }
 

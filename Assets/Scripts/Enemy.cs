@@ -6,6 +6,8 @@ public class Enemy : MonoBehaviour
 {
     public int health = 1;
     public int value = 1;
+    public int damage = 1;
+    public int attackSpeed = 1;
 
     [SerializeField] GameObject coin;
 
@@ -56,22 +58,50 @@ public class Enemy : MonoBehaviour
 
             rb.MovePosition(transform.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
 
-            /*if (hit.collider == null)
-            {
-                // No hay obstáculo, mueve el objeto
-                
-            }
-            else
-            {
-                // Hay un obstáculo, detén el objeto
-                rb.MovePosition(transform.position);
-            }*/
-
             // Verifica si el objeto ha llegado al punto objetivo
-            if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
+            if (Vector3.Distance(transform.position, targetPosition) < 0.2f)
             {
                 currentPointIndex++;
             }
         }
+        else
+        {
+            Debug.Log("A");
+            Vector3 targetPosition = new Vector3(0, 0, 0);
+            Vector3 moveDirection = (targetPosition - transform.position).normalized;
+
+            // Realiza un raycast hacia adelante para detectar obstáculos
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, moveDirection, raycastDistance, obstacleLayer);
+
+            rb.MovePosition(transform.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
+
+            // Verifica si el objeto ha llegado al punto objetivo
+            if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+            {
+                currentPointIndex++;
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Castle"))
+        {
+            Invoke("Attack", 0.1f);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.CompareTag("Castle"))
+        {
+            CancelInvoke("Attack");
+        }
+    }
+
+    private void Attack()
+    {
+        Health.Add(-damage);
+        Invoke("Attack", attackSpeed);
     }
 }

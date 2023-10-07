@@ -12,6 +12,13 @@ public class SpawnButton : MonoBehaviour, IPointerDownHandler
     [SerializeField] private Transform UITransform;
     [SerializeField] private int cost;
     [SerializeField] private Animator anim;
+    [SerializeField] private TMPro.TMP_Text amount;
+    [SerializeField] private int maxAmount = 5;
+
+    private void Start()
+    {
+        amount.text = GameObject.FindGameObjectsWithTag("Tower").Length.ToString() + "/" + maxAmount.ToString();
+    }
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -20,7 +27,7 @@ public class SpawnButton : MonoBehaviour, IPointerDownHandler
 
     public void Buy()
     {
-        if (Coins.Get() >= cost)
+        if (Coins.Get() >= cost && GameObject.FindGameObjectsWithTag("Tower").Length < maxAmount)
         {
             Coins.Add(-cost);
 
@@ -30,7 +37,8 @@ public class SpawnButton : MonoBehaviour, IPointerDownHandler
             GameObject uiPref = Instantiate(UIPref, UITransform);
 
             uiPref.GetComponentInChildren<TMP_Text>().text = "-" + cost.ToString();
-            Destroy(uiPref, 0.1f);
+            Destroy(uiPref, 1f);
+            amount.text = GameObject.FindGameObjectsWithTag("Tower").Length.ToString() + "/" + maxAmount.ToString();
         }
     }
 }

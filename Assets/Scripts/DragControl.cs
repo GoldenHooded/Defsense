@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 public class DragControl : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private bool doDrag = true;
+    public bool doDrag = true;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -15,11 +15,5 @@ public class DragControl : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         // Cuando el dedo sale de la UI, habilita el arrastre
         doDrag = true;
-    }
-
-    public bool CanDrag()
-    {
-        // Devuelve el estado actual de doDrag
-        return Input.touchCount == 0 || doDrag;
     }
 }

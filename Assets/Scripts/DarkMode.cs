@@ -23,6 +23,8 @@ public class DarkMode : MonoBehaviour
     [SerializeField] private DarkMode darkmode;
     [SerializeField] private SpriteRenderer sprite;
 
+    [SerializeField] private Color cameraColor;
+
     private void Start()
     {
         if (isDarkMode)
@@ -31,12 +33,13 @@ public class DarkMode : MonoBehaviour
             if (on) GetComponent<Animator>().SetTrigger("Pressed");
         }
         darkmode = GameObject.FindGameObjectWithTag("DarkMode").GetComponent<DarkMode>();
-        image = GameObject.FindGameObjectWithTag("DarkMode").GetComponentInChildren<Image>();
+        image = GameObject.FindGameObjectWithTag("DarkMode").GetComponentsInChildren<Image>()[1];
     }
     private void LateUpdate()
     {
         if (isCamera)
         {
+            Debug.Log("A");
             camera.backgroundColor = image.color - gridColor;
         }
 

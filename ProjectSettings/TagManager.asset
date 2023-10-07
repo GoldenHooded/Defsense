@@ -8,6 +8,7 @@ TagManager:
   - Tower
   - DarkMode
   - Borders
+  - Enemy
   layers:
   - Default
   - TransparentFX

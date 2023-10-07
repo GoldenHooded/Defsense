@@ -12,6 +12,7 @@ public class Health : MonoBehaviour
     private float topShown;
 
     [SerializeField] float lerpSpeed;
+    [SerializeField] private Animator anim;
 
     private RectTransform rectTransform;
 
@@ -38,6 +39,11 @@ public class Health : MonoBehaviour
         health = Mathf.Lerp(health, healthShown, lerpSpeed);
 
         UpdateHealthBar(health);
+
+        if (healthShown <= 0)
+        {
+            anim.SetBool("Defeat", true);
+        }
     }
 
     public static void Add(int coinsToAdd)
