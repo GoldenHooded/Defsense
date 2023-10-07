@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 1382939536}
   - component: {fileID: 1382939538}
   - component: {fileID: 1382939537}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: EnemyBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
