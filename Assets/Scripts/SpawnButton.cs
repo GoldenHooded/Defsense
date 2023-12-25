@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SpawnButton : MonoBehaviour, IPointerDownHandler
+public class SpawnButton : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private GameObject spawnPrefab;
     [SerializeField] private GameObject UIPref;
@@ -15,19 +15,46 @@ public class SpawnButton : MonoBehaviour, IPointerDownHandler
     [SerializeField] private TMPro.TMP_Text amount;
     [SerializeField] private int maxAmount = 5;
 
+    [SerializeField] new private string tag;
+    private int amountInt;
+
     private void Start()
     {
-        amount.text = GameObject.FindGameObjectsWithTag("Tower").Length.ToString() + "/" + maxAmount.ToString();
+        amountInt = GameObject.FindGameObjectsWithTag(tag).Length;
+        amount.text = amountInt.ToString() + "/" + maxAmount.ToString();
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
         anim.SetTrigger("Click");
     }
 
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        anim.SetTrigger("Down");
+    }
+    
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        anim.SetTrigger("Up");
+    }
+
+    public void ResetTriggers()
+    {
+        anim.ResetTrigger("Down");
+        anim.ResetTrigger("Up");
+        anim.ResetTrigger("Click");
+    }
+
+    private void Update()
+    {
+        amount.text = "" + amountInt.ToString() + "/" + maxAmount.ToString();
+    }
+
     public void Buy()
     {
-        if (Coins.Get() >= cost && GameObject.FindGameObjectsWithTag("Tower").Length < maxAmount)
+        amountInt = GameObject.FindGameObjectsWithTag(tag).Length;
+        if (Coins.Get() >= cost && amountInt < maxAmount)
         {
             Coins.Add(-cost);
 
@@ -38,7 +65,7 @@ public class SpawnButton : MonoBehaviour, IPointerDownHandler
 
             uiPref.GetComponentInChildren<TMP_Text>().text = "-" + cost.ToString();
             Destroy(uiPref, 1f);
-            amount.text = GameObject.FindGameObjectsWithTag("Tower").Length.ToString() + "/" + maxAmount.ToString();
+            amountInt++;
         }
     }
 }

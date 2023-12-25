@@ -10,7 +10,6 @@ public class Spawn : MonoBehaviour
     {
         Instantiate(pref, transform.position, Quaternion.identity);
         CameraDrag.CheckStructures();
-        Handheld.Vibrate();
         Destroy(gameObject, 0.01f);
     }
 

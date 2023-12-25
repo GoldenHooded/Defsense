@@ -41,7 +41,7 @@ public class RoundManager : MonoBehaviour
         {
             sizeToHave = sizes[2];
         }
-        else if (round >= 15 && round < 20) // [15, 20)
+        else if (round >= 15 && round < 30) // [15, 30)
         {
             sizeToHave = sizes[3];
         }
@@ -93,7 +93,6 @@ public class RoundManager : MonoBehaviour
 
         if (both && round >= 10)
         {
-            Debug.Log("A");
             if (i == 0)
             {
                 roundNSWE.text += " & North";
@@ -170,6 +169,27 @@ public class RoundManager : MonoBehaviour
                 enemySpawner[j].Spawn();
             }
         }
+        else if (round >= 20 && round < 30) // [15, 20)
+        {
+            sizeToHave = sizes[3];
+            int amountToSpawn = Random.Range(21, round + 5);
+            j += 4 * 4;
+            i += 4 * 4;
+
+
+            if (both)
+            {
+                enemySpawner[j].amountToSpawn = amountToSpawn / 2;
+                enemySpawner[i].amountToSpawn = amountToSpawn / 2;
+                enemySpawner[j].Spawn();
+                enemySpawner[i].Spawn();
+            }
+            else
+            {
+                enemySpawner[j].amountToSpawn = amountToSpawn;
+                enemySpawner[j].Spawn();
+            }
+        }
 
         roundNSWEAnim.SetTrigger("Change");
 
@@ -197,5 +217,6 @@ public class RoundManager : MonoBehaviour
         onAttack = false;
 
         SaveManager.SaveS();
+        SaveManager.LoadS();
     }
 }

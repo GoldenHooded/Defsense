@@ -13,6 +13,17 @@ public class DarkModeUI : MonoBehaviour
     [SerializeField] private Color blue;
     private Color colorToHave;
 
+    [SerializeField] private bool v2;
+
+    private void Awake()
+    {
+        if (v2)
+        {
+            image = GetComponent<Image>();
+            imageToCopyColor = GameObject.FindGameObjectWithTag("BackGround").GetComponent<Image>();
+        }
+    }
+
     private void LateUpdate()
     {
         if (isStartRound)
@@ -26,7 +37,6 @@ public class DarkModeUI : MonoBehaviour
                 colorToHave = imageToCopyColor.color;
                 colorToHave.a = 0.5f;
             }
-
             image.color = Color.Lerp(image.color, colorToHave, 0.1f);
         }
         else

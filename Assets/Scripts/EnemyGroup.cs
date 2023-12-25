@@ -16,7 +16,7 @@ public class EnemyGroup : MonoBehaviour
         int random = Random.Range(1, 7);
         for (int i = 0; i < random; i++)
         {
-            GameObject pref = Instantiate(prefab, transform);
+            GameObject pref = Instantiate(prefab, transform.position, prefab.transform.rotation);
             pref.transform.position = (Vector2)transform.position + new Vector2(Random.Range(-0.5f, 0.25f), Random.Range(-0.5f, 0.5f));
         }
 

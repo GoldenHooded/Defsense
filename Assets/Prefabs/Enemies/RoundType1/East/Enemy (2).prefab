@@ -72,7 +72,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5470218179509082976}
   - component: {fileID: 5470218179509083035}
-  - component: {fileID: 5470218179509082980}
   - component: {fileID: 5470218179509082981}
   - component: {fileID: 5470218179509082982}
   - component: {fileID: 5470218179509082983}
@@ -146,7 +145,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
+  m_Color: {r: 0.5568628, g: 0.36862746, b: 0.3647059, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -156,30 +155,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5470218179509082980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5470218179509082977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96ba094bfebe84b48a35a83ae0f3307d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  image: {fileID: 0}
-  isCamera: 0
-  camera: {fileID: 0}
-  isDarkMode: 0
-  gridColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 0}
-  grid: {fileID: 0}
-  actLikeGrid: []
-  isSprite: 0
-  isSpriteLayout: 1
-  layaoutColorMult: {r: 1, g: 0.5137255, b: 0.5058824, a: 1}
-  darkmode: {fileID: 0}
-  sprite: {fileID: 5470218179509083035}
 --- !u!114 &5470218179509082981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,7 +200,7 @@ Rigidbody2D:
   m_LinearDrag: 0.1
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 2fcb5ae63762414418a94cbddece1299, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0

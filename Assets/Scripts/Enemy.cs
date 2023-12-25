@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     public int health = 1;
     public int value = 1;
     public int damage = 1;
-    public int attackSpeed = 1;
+    public float attackSpeed = 1;
 
     [SerializeField] GameObject coin;
 
@@ -19,11 +19,21 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float raycastDistance = 0.1f; // Distancia del raycast para detectar obstáculos
     [SerializeField] private LayerMask obstacleLayer; // Capa de obstáculos
 
+    private Wall target;
+
     private Rigidbody2D rb;
+
+    private int lastHealth;
 
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        normalColor = spriteRenderer.color;
+        lastHealth = health;
+        pointsTransforms = GetComponentsInChildren<Transform>();
+
         rb = GetComponent<Rigidbody2D>();
+        rb.freezeRotation = true;
         points = new Vector3[pointsTransforms.Length];
         for (int i = 0; i < pointsTransforms.Length; i++)
         {
@@ -39,6 +49,22 @@ public class Enemy : MonoBehaviour
             Coins.Add(value);
             Destroy(this.gameObject);
         }
+    }
+
+    private Color normalColor;
+    private SpriteRenderer spriteRenderer;
+    public void White()
+    {
+        normalColor.a = 0.25f;
+        spriteRenderer.color = normalColor;
+        CancelInvoke("ResetColor");
+        Invoke("ResetColor", 0.1f);
+    }
+
+    private void ResetColor()
+    {
+        normalColor.a = 1f;
+        spriteRenderer.color = normalColor;
     }
 
     void FixedUpdate()
@@ -66,7 +92,6 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Debug.Log("A");
             Vector3 targetPosition = new Vector3(0, 0, 0);
             Vector3 moveDirection = (targetPosition - transform.position).normalized;
 
@@ -89,6 +114,13 @@ public class Enemy : MonoBehaviour
         {
             Invoke("Attack", 0.1f);
         }
+
+        if (collision.collider.CompareTag("WallSub"))
+        {
+            target = collision.collider.GetComponentInParent<Wall>();
+
+            Invoke("AttackWall", 0.1f);
+        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -97,11 +129,22 @@ public class Enemy : MonoBehaviour
         {
             CancelInvoke("Attack");
         }
+
+        if (collision.collider.CompareTag("WallSub"))
+        {
+            CancelInvoke("AttackWall");
+        }
     }
 
     private void Attack()
     {
         Health.Add(-damage);
         Invoke("Attack", attackSpeed);
+    }
+
+    private void AttackWall()
+    {
+        target.health -= damage;
+        Invoke("AttackWall", attackSpeed);
     }
 }

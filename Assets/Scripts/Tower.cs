@@ -18,12 +18,16 @@ public class Tower : MonoBehaviour
     [SerializeField] private float cDRecoverSpeed;
     [SerializeField] private Image cDImg;
 
+    [SerializeField] private Transform cannon;
+
     private bool doDrag;
 
     private void Awake()
     {
         Invoke("Attack", timeBetwenAttacks);
         Invoke("ResetCooldown", 0.01f);
+
+        nuevaRotacion = Quaternion.identity;
     }
 
     private void ResetCooldown()
@@ -71,6 +75,7 @@ public class Tower : MonoBehaviour
     }
 
     private bool firstWithoutCooldown;
+    Quaternion nuevaRotacion;
 
     private void Update()
     {
@@ -111,6 +116,37 @@ public class Tower : MonoBehaviour
         }
 
         cDImg.fillAmount = coolDown;
+
+        for (int h = 0; h < enemyArray.Length; h++)
+        {
+            if (enemyArray[h] != null)
+            {
+                // Calcula la dirección desde este objeto hacia el objetivo
+                Vector2 direccion = enemyArray[h].transform.position - cannon.position;
+
+                // Normaliza la dirección para obtener un vector unitario
+                direccion.Normalize();
+
+                // Calcula el ángulo en radianes usando la función atan2 y conviértelo a grados
+                float angulo = Mathf.Atan2(direccion.y, direccion.x) * Mathf.Rad2Deg;
+
+                angulo -= 90;
+
+                Quaternion rotacionActual = cannon.rotation;
+
+                // Calcula la rotación deseada
+                Quaternion rotacionDeseada = Quaternion.Euler(new Vector3(0f, 0f, angulo));
+
+                // Interpola suavemente entre la rotación actual y la deseada
+                nuevaRotacion = Quaternion.Slerp(rotacionActual, rotacionDeseada, 5f * Time.deltaTime);
+
+                // Aplica la nueva rotación al objeto
+                
+                break;
+            }
+        }
+
+        cannon.rotation = nuevaRotacion;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

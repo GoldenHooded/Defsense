@@ -12,37 +12,71 @@ public class Bullet : MonoBehaviour
 
     private bool done = false;
     private bool done2 = false;
+    private bool done3 = false;
 
+    Vector3 direccion;
     private void Update()
     {
-        if (!done && target != null)
+        if (target == null)
         {
-            Vector3 direccion = target.transform.position - transform.position;
+            Enemy[] enemies = FindObjectsOfType<Enemy>();
 
-            // Normaliza la dirección para mantener una velocidad constante
-            direccion.Normalize();
-
-            // Mueve el objeto hacia el destino a la velocidad especificada
-            transform.Translate(direccion * velocidad * Time.deltaTime, Space.World);
-
-            if (Vector2.Distance(transform.position, target.transform.position) < 0.15f)
+            for (int i = 0; i < enemies.Length; i++)
             {
-                done = true;
+                if (enemies[i] != null)
+                {
+                    if (Vector2.Distance((Vector2)enemies[i].transform.position, (Vector2)transform.position) < 0.75f)
+                    {
+                        target = enemies[i];
+                        break;
+                    }
+                }
+            }
+
+            if (target == null)
+            {
+                // Mueve el objeto hacia el destino a la velocidad especificada
+                transform.Translate(direccion * velocidad * Time.deltaTime, Space.World);
+
+                if (!done3 )
+                {
+                    Destroy(target, 1f);
+                    done3 = true;
+                }
             }
         }
         else
         {
-            rb.bodyType = RigidbodyType2D.Static;
-            spriteRenderer.enabled = false;
+            done3 = false;
 
-            if (!done2 )
+            if (!done)
             {
-                target.health--;
-                done2 = true;
-                Destroy(gameObject, 1f);
-            }
-        }
+                direccion = target.transform.position - transform.position;
 
-        if (target == null) Destroy(gameObject);
+                // Normaliza la dirección para mantener una velocidad constante
+                direccion.Normalize();
+
+                // Mueve el objeto hacia el destino a la velocidad especificada
+                transform.Translate(direccion * velocidad * Time.deltaTime, Space.World);
+
+                if (Vector2.Distance(transform.position, target.transform.position) < 0.15f)
+                {
+                    done = true;
+                }
+            }
+            else
+            {
+                rb.bodyType = RigidbodyType2D.Static;
+                spriteRenderer.enabled = false;
+
+                if (!done2)
+                {
+                    target.health--;
+                    target.White();
+                    done2 = true;
+                    Destroy(gameObject, 1f);
+                }
+            } 
+        }
     }
 }

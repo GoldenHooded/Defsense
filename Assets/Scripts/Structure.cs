@@ -6,6 +6,9 @@ public class Structure : MonoBehaviour
     public bool doDrag;
 
     [SerializeField] private bool isLongPressed = false;
+    [SerializeField] private bool isWall = false;
+    [SerializeField] private bool isWall2 = false;
+    private Wall wall;
     private float longPressDuration = 0.3f; // Duración del click prolongado en segundos
     private float pressTime = 0f;
     private bool touchStartedInsideObject = false; // Variable para rastrear si el toque comienza dentro del objeto
@@ -23,14 +26,19 @@ public class Structure : MonoBehaviour
     [SerializeField] private bool hasRange;
     [SerializeField] private Animator rangeAnim;
 
+    private DragControl dragControl;
+
     private void Awake()
     {
         CameraDrag.CheckStructures();
+        dragControl = FindObjectOfType<DragControl>();
+
+        wall = isWall ? GetComponentInParent<Wall>() : null;
     }
 
     void Update()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && dragControl.doDrag)
         {
             Touch touch = Input.GetTouch(0);
             Vector2 touchPos = Camera.main.ScreenToWorldPoint(touch.position);
@@ -94,6 +102,18 @@ public class Structure : MonoBehaviour
         collider2D_.radius = isLongPressed ? 3f : 1.725f; 
         doDrag = !isLongPressed;
         rb.bodyType = isLongPressed ? RigidbodyType2D.Kinematic : RigidbodyType2D.Dynamic;
+
+        if (isWall)
+        {
+            if (!isWall2)
+            {
+                wall.dragging = isLongPressed; 
+            }
+            else
+            {
+                wall.dragging2 = isLongPressed;
+            }
+        }
     }
 
     public void StructureUp()

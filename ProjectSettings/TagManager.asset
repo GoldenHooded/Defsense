@@ -9,6 +9,10 @@ TagManager:
   - DarkMode
   - Borders
   - Enemy
+  - Wall
+  - WallSub
+  - TowerLV2
+  - BackGround
   layers:
   - Default
   - TransparentFX

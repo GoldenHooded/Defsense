@@ -14,8 +14,10 @@ public class DarkMode : MonoBehaviour
 
     [SerializeField] private bool isDarkMode;
     [SerializeField] private Color gridColor;
+    [SerializeField] private Color seaColor;
     [SerializeField] private Tilemap grid;
     [SerializeField] private SpriteRenderer[] actLikeGrid;
+    [SerializeField] private SpriteRenderer[] actLikeSea;
 
     [SerializeField] private bool isSprite;
     [SerializeField] private bool isSpriteLayout;
@@ -39,7 +41,6 @@ public class DarkMode : MonoBehaviour
     {
         if (isCamera)
         {
-            Debug.Log("A");
             camera.backgroundColor = image.color - gridColor;
         }
 
@@ -59,6 +60,11 @@ public class DarkMode : MonoBehaviour
             for (int i = 0; i < actLikeGrid.Length; i++)
             {
                 actLikeGrid[i].color = gridColor;
+            }
+
+            for (int i = 0; i < actLikeSea.Length; i++)
+            {
+                actLikeSea[i].color = seaColor;
             }
         }
     }
